@@ -66,19 +66,24 @@ Top 3 most influential features (75% total importance):
 Linear relationship dominates this dataset, which is why Ridge outperforms complex tree models.
 
 ## Project Structure
+```txt
 ├── Student_Performance_Factors.csv
 ├── Student_Exam_Score_Prediction.ipynb
 ├── ridge_student_exam_prediction.joblib
 ├── README.md
-
+```
 
 ## Installation & Usage
-```pip install pandas numpy matplotlib seaborn scikit-learn joblib```
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn joblib
+```
 # Train
-```jupyter notebook Student_Exam_Score_Prediction.ipynb```
+```bash
+jupyter notebook Student_Exam_Score_Prediction.ipynb
+```
 
 # Load saved model for inference
-```
+```python
 import joblib
 model = joblib.load("ridge_student_exam_prediction.joblib")
 prediction = model.predict(X_new) # X_new = raw dataframe with same columns
