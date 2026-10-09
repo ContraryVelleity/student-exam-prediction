@@ -70,7 +70,7 @@ Linear relationship dominates this dataset, which is why Ridge outperforms compl
 ├── Student_Performance_Factors.csv
 ├── Student_Exam_Score_Prediction.ipynb
 ├── ridge_student_exam_prediction.pkl
-├── README.md
+└── README.md
 ```
 
 ## Installation & Usage
