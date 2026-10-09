@@ -67,7 +67,7 @@ Linear relationship dominates this dataset, which is why Ridge outperforms compl
 
 ## Project Structure
 ├── Student_Performance_Factors.csv
-├── Student_Exam_Score_Prediction.ipynb # Notebook with detailed markdown per BAB
+├── Student_Exam_Score_Prediction.ipynb
 ├── ridge_student_exam_prediction.joblib
 ├── README.md
 
