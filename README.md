@@ -2,9 +2,9 @@
 
 End-to-end ML regression project to predict student exam scores from study habits, attendance, and socio-economic factors. Built with a **leak-free scikit-learn Pipeline** and ready for production deployment via Flask API.
 
-[Python](https://img.shields.io/badge/Python-3.9+-blue)
-[Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.6.1-orange)
-[Status](https://img.shields.io/badge/Status-Deployment%20Ready-green)
+![Python](https://img.shields.io/badge/Python-3.9+-blue)
+![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.6.1-orange)
+![Status](https://img.shields.io/badge/Status-Deployment%20Ready-green)
 
 **Best Model: Ridge Regression | MAE: 0.4456 | RMSE: 1.8001 | R²: 0.7707**
 
@@ -117,14 +117,12 @@ def predict():
 
 ## 📁 Repository Structure
 ```
-├── Student_Performance_Factors.csv
-├── Student_Exam_Score_Prediction.pdf      # Latest: 29 pages, exported from ipynb (source of truth, since ipynb not supported as input)
-├── Student_Exam_Score_Prediction.html     # Previous version
-├── Deployment_dan_Monitoring_Notion_OCR.pdf # Reference for BAB 9-10
+├── Student_Performance_Factors.csv        # Dataset
+├── Student_Exam_Score_Prediction.ipynb    # Jupyter Notebook
 ├── ridge_student_exam_prediction.joblib   # Best pipeline (joblib)
 ├── ridge_student_exam_prediction.pkl      # Best pipeline (pickle)
 ├── best_model_ridge.pkl / .joblib         # Alternative saves
-├── app.py                                 # Flask API (BAB 9)
+├── app.py                                 # Flask API
 ├── data.json                              # Sample request for API
 └── README.md
 ```
@@ -170,8 +168,3 @@ curl -X POST http://127.0.0.1:5000/predict -H "Content-Type: application/json" -
 - Linear Ridge beats tree ensembles because relationship is mostly linear
 - Leak-free Pipeline is critical: imputer/scaler fitted only on train
 - Model ready for production with Flask + monitoring for drift
-
-## 📄 License & Credits
-- Dataset: Student Performance Factors
-- Deployment reference: Notion OCR - Deployment dan Monitoring (Dicoding)
-- Notebook: 29-page PDF converted from ipynb (latest progress)
