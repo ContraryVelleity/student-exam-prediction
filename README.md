@@ -24,29 +24,29 @@ End-to-end ML regression project to predict student exam scores from study habit
 
 ---
 
-## 🔬 Methodology (Sesuai Jupyter 7 BAB)
+## 🔬 Methodology
 
-### BAB 1: Data Loading & Understanding [Cell 1-4]
+### BAB 1: Data Loading & Understanding
 - Import: `pandas`, `numpy`, `matplotlib`, `seaborn`, `sklearn` (ColumnTransformer, Pipeline, SimpleImputer, StandardScaler, OneHotEncoder, OrdinalEncoder, Ridge, RandomForest, GradientBoosting)
 - `pd.read_csv`, `info()`, `describe(include="all")`, `select_dtypes`
 - `numeric_features_scaled = [c for c in numeric_features if c != 'Exam_Score']` - target excluded from scaling
 - `df = data_raw.copy()` to keep raw backup
 
-### BAB 2: Data Cleaning [Cell 5,6,10]
+### BAB 2: Data Cleaning
 - `isnull().sum()` and `duplicated()` check
 - Missing handled with `SimpleImputer(most_frequent)` inside Pipeline (not dropped) to prevent data leakage. Numeric uses median (robust to outliers)
 
-### BAB 3: EDA - Outlier & Distribution [Cell 7,8,9,11,12,13]
+### BAB 3: EDA - Outlier & Distribution
 - **Outlier:** Boxplot per feature + IQR method `Q1-1.5*IQR` / `Q3+1.5*IQR` (Tukey standard)
 - **Frequency:** `value_counts().sort_index()` to keep natural order, not frequency order
 - **Distribution:** `sns.histplot(kde=True)`, `bins=20`
 - **Key Detail - Why index [0]:** `numeric_features[0] = Hours_Studied` (skew 0.01, mean 19.9, std 5.9) - very normal, so after `z=(x-mean)/std` it forms a bell curve centered at 0 like the module example. If using `[3]=Previous_Scores` (uniform distribution) the shape stays flat. Empty gaps after standardization are artifacts because original data is discrete (integers) -> use `bins=20` to fix.
 
-### BAB 4: ExDA - Correlation [Cell 14,15]
+### BAB 4: ExDA - Correlation
 - `corr()`, `heatmap(annot=True, cmap='coolwarm', vmin=-1, vmax=1, fmt='.2f')`
 - Correlation to `Exam_Score`: `Attendance` 0.57, `Hours_Studied` 0.44, `Previous_Scores` 0.17. Weak multicollinearity (<0.1) among features. Linear model expected to win.
 
-### BAB 5: Data Preparation - Splitting & Preprocessing [Cell 16-20]
+### BAB 5: Data Preparation - Splitting & Preprocessing
 - `X = drop(Exam_Score)`, `y = Exam_Score`
 - `train_test_split(test_size=0.2, random_state=42)` - 80:20 Pareto, 42 for reproducibility
 - Manual ordinal categories: `[Low, Medium, High]` etc. to avoid alphabetical misordering (High, Low, Medium)
@@ -56,7 +56,7 @@ End-to-end ML regression project to predict student exam scores from study habit
 - `OneHotEncoder` for nominal to avoid **false ordinal relationship**: e.g., Gender Male=1 Female=0 would make model think Male > Female. OneHot creates separate binary columns.
 - All inside `Pipeline` to fit only on train data -> no leakage
 
-### BAB 6: Modeling [Cell 21,22]
+### BAB 6: Modeling
 ```python
 pipe_ridge = Pipeline([('prep', preprocessor_linear), ('reg', Ridge(alpha=1.0, random_state=42))])
 pipe_rf = Pipeline([('prep', preprocessor_tree), ('reg', RandomForestRegressor(n_estimators=300, min_samples_split=5, min_samples_leaf=2, random_state=42, n_jobs=-1))])
@@ -66,7 +66,7 @@ pipe_gb = Pipeline([('prep', preprocessor_tree), ('reg', GradientBoostingRegress
 - RF 300 trees for stability, min_samples_split=5 to prevent overfitting, n_jobs=-1 for all cores
 - GB learning_rate=0.05 small for slow but accurate boosting, max_depth=3 weak learners
 
-### BAB 7: Validation & Evaluation [Cell 23-29]
+### BAB 7: Validation & Evaluation
 - Validation: `pipe_ridge.named_steps['prep'].named_transformers_['num'].transform()` - proves scaler fitted only on train (mean ~0 std ~1, test mean !=0)
 - Metrics: MAE, RMSE = sqrt(MSE), R2. Sorted by RMSE (more sensitive to large errors)
 - Visuals:
@@ -81,7 +81,7 @@ pipe_gb = Pipeline([('prep', preprocessor_tree), ('reg', GradientBoostingRegress
 | GradientBoosting | 0.6997 | 1.9189 | 0.7394 |
 | RandomForest | 1.0446 | 2.1054 | 0.6863 |
 
-### BAB 8: Saving Model [Cell 30-31 - from previous version]
+### BAB 8: Saving Model
 ```python
 import joblib, pickle
 joblib.dump(pipe_ridge, 'ridge_student_exam_prediction.joblib')
@@ -89,7 +89,7 @@ with open('ridge_student_exam_prediction.pkl','wb') as f: pickle.dump(pipe_ridge
 ```
 Pipeline saved (not just regressor) so preprocessing params are preserved.
 
-### BAB 9: Deployment [Added per Deployment_dan_Monitoring_Notion_OCR.pdf]
+### BAB 9: Deployment
 - Load model: `joblib.load()` and `pickle.load()` - ensure same sklearn/joblib version (1.6.1 / 1.5.1) to avoid conflict
 - Flask REST API (`app.py`):
 ```python
